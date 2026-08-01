@@ -2,494 +2,259 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-<title>Rifa 001</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rifa Compartilhada</title>
 
 <style>
-
-:root{
-  --bg:#f3f4f6;
-  --card:#ffffff;
-  --text:#111827;
-  --muted:#6b7280;
-  --primary:#2563eb;
-  --success:#16a34a;
-  --warning:#f59e0b;
-  --danger:#dc2626;
-  --border:#e5e7eb;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-html,body{
+body{
+  font-family:Arial,sans-serif;
+  background:#f2f2f2;
   margin:0;
-  padding:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  -webkit-text-size-adjust:100%;
+  padding:15px;
 }
-
-.container{
-  width:100%;
-  max-width:1100px;
-  margin:0 auto;
-  padding:16px;
-}
-
 h1{
-  margin:0 0 6px;
   text-align:center;
-  font-size:32px;
+  margin-bottom:5px;
 }
-
 .sub{
   text-align:center;
-  font-weight:700;
-  color:var(--success);
-  margin-bottom:8px;
-}
-
-.info{
-  text-align:center;
-  color:var(--muted);
+  font-size:20px;
+  font-weight:bold;
+  color:#0a7d2c;
   margin-bottom:20px;
 }
-
 .cards{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-bottom:18px;
+  gap:10px;
+  margin-bottom:15px;
 }
-
 .card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:16px;
+  background:white;
+  padding:15px;
+  border-radius:10px;
   text-align:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.04);
+  box-shadow:0 0 6px rgba(0,0,0,.15);
 }
-
 .card h3{
-  margin:0 0 8px;
+  margin:0;
   font-size:14px;
-  color:var(--muted);
 }
-
 .card span{
   font-size:28px;
-  font-weight:800;
+  font-weight:bold;
 }
-
 .botoes{
   display:flex;
-  flex-wrap:wrap;
   gap:10px;
   justify-content:center;
-  margin-bottom:18px;
-}
-
-button{
-  border:none;
-  border-radius:12px;
-  padding:12px 16px;
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-  min-height:44px;
-}
-
-.admin{background:#111827;color:#fff;}
-.sair{background:#6b7280;color:#fff;}
-.reset{background:var(--danger);color:#fff;}
-
-.lista{
-  display:grid;
-  gap:12px;
-}
-
-.item{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:14px;
-  box-shadow:0 2px 8px rgba(0,0,0,.04);
-}
-
-.item.reservado{
-  border-color:#fde68a;
-  background:#fffdf5;
-}
-
-.item.pago{
-  border-color:#86efac;
-  background:#f0fdf4;
-}
-
-.topo{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
-}
-
-.nome{
-  font-size:18px;
-  font-weight:800;
-}
-
-.tag{
-  font-size:12px;
-  font-weight:800;
-  padding:6px 10px;
-  border-radius:999px;
-  white-space:nowrap;
-}
-
-.tag.disponivel{
-  background:#dbeafe;
-  color:#1d4ed8;
-}
-
-.tag.reservado{
-  background:#fef3c7;
-  color:#92400e;
-}
-
-.tag.pago{
-  background:#dcfce7;
-  color:#166534;
-}
-
-.comprador{
-  font-size:15px;
-  margin-bottom:12px;
-}
-
-.campo{
-  display:grid;
-  gap:10px;
-}
-
-.campo input{
-  width:100%;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:14px;
-  font-size:16px;
-  background:#fff;
-  min-height:48px;
-  outline:none;
-}
-
-.campo input:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(37,99,235,.15);
-}
-
-.btn-reservar{
-  width:100%;
-  background:var(--primary);
-  color:#fff;
-}
-
-.admin-acoes{
-  display:flex;
-  gap:10px;
+  margin-bottom:15px;
   flex-wrap:wrap;
 }
-
-.btn-pix{
-  flex:1;
-  background:var(--success);
-  color:#fff;
+button{
+  border:none;
+  border-radius:8px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px;
 }
-
-.btn-liberar{
-  flex:1;
-  background:var(--danger);
-  color:#fff;
+.admin{background:#222;color:white;}
+.sair{background:#666;color:white;}
+.reset{background:#c62828;color:white;}
+input{
+  width:100%;
+  padding:8px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  box-sizing:border-box;
 }
-
-@media (max-width:720px){
-
-  .container{
-    padding:12px;
-  }
-
-  h1{
-    font-size:28px;
-  }
-
-  .cards{
-    grid-template-columns:1fr;
-  }
-
-  .topo{
-    align-items:flex-start;
-  }
-
-  .admin-acoes{
-    flex-direction:column;
-  }
-
-  .btn-pix,
-  .btn-liberar{
-    width:100%;
-  }
-
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
 }
-
+th{
+  background:#222;
+  color:white;
+  padding:10px;
+}
+td{
+  padding:8px;
+  border:1px solid #ddd;
+  text-align:center;
+}
+.disponivel{background:white;}
+.reservado{background:#fff7d6;}
+.pago{background:#c8f7c5;}
+.tag{
+  font-weight:bold;
+}
+.verde{color:#0a7d2c;}
+.amarelo{color:#b8860b;}
+.azul{color:#1565c0;}
+@media(max-width:700px){
+  .cards{grid-template-columns:1fr;}
+  table{font-size:12px;}
+}
 </style>
 </head>
+
 <body>
-<div class="container">
-<h1>RIFA 001</h1>
 
-<div class="sub">
-  Prêmio: KIT CHURRASCO + CERVEJA
-</div>
-
-<div class="info">
-  Valor do nome: R$ 20,00
-</div>
+<h1>Rifa Teste</h1>
+<div class="sub">Prêmio Surpresa</div>
 
 <div class="cards">
-
-  <div class="card">
-    <h3>Disponíveis</h3>
-    <span id="disp">0</span>
-  </div>
-
-  <div class="card">
-    <h3>Reservados</h3>
-    <span id="res">0</span>
-  </div>
-
-  <div class="card">
-    <h3>Pagos</h3>
-    <span id="pag">0</span>
-  </div>
-
+  <div class="card"><h3>Disponíveis</h3><span id="disp">0</span></div>
+  <div class="card"><h3>Reservados</h3><span id="res">0</span></div>
+  <div class="card"><h3>Pagos</h3><span id="pag">0</span></div>
 </div>
+
+<!-- <input id="pesquisa" placeholder="Pesquisar nome..." onkeyup="filtrar()"> -->
 
 <div class="botoes">
-
-  <button class="admin" onclick="loginAdmin()">
-    Login Admin
-  </button>
-
-  <button class="sair" id="btnSair" style="display:none" onclick="logoutAdmin()">
-    Sair
-  </button>
-
-  <button class="reset" id="btnReset" style="display:none" onclick="resetar()">
-    Reset Geral
-  </button>
-
+  <button class="admin" onclick="loginAdmin()">Login Admin</button>
+  <button class="sair" id="btnSair" style="display:none" onclick="logoutAdmin()">Sair</button>
+  <button class="reset" id="btnReset" style="display:none" onclick="resetar()">Reset Geral</button>
 </div>
 
-<div class="lista" id="lista"></div>
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Comprador</th>
+      <th>Status</th>
+      <th>Ação</th>
+    </tr>
+  </thead>
+  <tbody id="tabela"></tbody>
+</table>
 
 <script>
 
-const API =
-"https://script.google.com/macros/s/AKfycbxul6neaXASt-kFCc4AcHpztykUVTvykoz7dvCOEirrD2YC4mp8qHllyEdl_PMLgU0C/exec";
-
+const API = "https://script.google.com/macros/s/AKfycbxul6neaXASt-kFCc4AcHpztykUVTvykoz7dvCOEirrD2YC4mp8qHllyEdl_PMLgU0C/exec";
 const SENHA = "Axé2026";
 
 let admin = false;
 let lista = [];
-async function carregar(){
-
+async function carregar() {
   const r = await fetch(API);
   lista = await r.json();
-
   render();
 }
 
-async function salvar(item){
-
-  await fetch(API,{
-    method:"POST",
-    body:JSON.stringify(item)
+async function salvar(item) {
+  await fetch(API, {
+    method: "POST",
+    body: JSON.stringify(item)
   });
 }
 
-function atualizarPainel(){
+function atualizarPainel() {
+  let d = 0, r = 0, p = 0;
 
-  let d=0,r=0,p=0;
-
-  lista.forEach(i=>{
-
-    if(i.pago) p++;
-    else if(i.travado) r++;
+  lista.forEach(i => {
+    if (i.pago) p++;
+    else if (i.travado) r++;
     else d++;
-
   });
 
-  document.getElementById("disp").innerText=d;
-  document.getElementById("res").innerText=r;
-  document.getElementById("pag").innerText=p;
+  document.getElementById("disp").innerText = d;
+  document.getElementById("res").innerText = r;
+  document.getElementById("pag").innerText = p;
 }
 
-function render(){
+function render() {
+  const tbody = document.getElementById("tabela");
+  tbody.innerHTML = "";
 
-  const div = document.getElementById("lista");
+  lista.forEach((item, i) => {
+    const tr = document.createElement("tr");
 
-  div.innerHTML = "";
+    if (item.pago) tr.className = "pago";
+    else if (item.travado) tr.className = "reservado";
+    else tr.className = "disponivel";
 
-  lista.forEach((item,i)=>{
+    let status = "";
+    let acao = "";
 
-    const card = document.createElement("div");
-
-    card.className = "item";
-
-    if(item.pago) card.classList.add("pago");
-    else if(item.travado) card.classList.add("reservado");
-
-    let tag = "";
-    let conteudo = "";
-
-    if(item.pago){
-
-      tag = '<span class="tag pago">PAGO</span>';
-
-      conteudo = `
-        <div class="comprador">
-          <strong>Comprador:</strong> ${item.comprador}
-        </div>
-      `;
-
+    if (item.pago) {
+      status = '<span class="tag verde">PAGO</span>';
+      acao = "Pago confirmado";
     }
 
-    else if(item.travado){
+    else if (item.travado) {
+      status = '<span class="tag amarelo">RESERVADO</span>';
 
-      tag = '<span class="tag reservado">RESERVADO</span>';
+      if (admin) {
+        acao = `
+          <button style="background:#2e7d32;color:white"
+            onclick="confirmarPago(${i})">PIX</button>
 
-      conteudo = `
-        <div class="comprador">
-          <strong>Comprador:</strong> ${item.comprador}
-        </div>
-      `;
-
-      if(admin){
-
-        conteudo += `
-          <div class="admin-acoes">
-
-            <button class="btn-pix"
-              onclick="confirmarPago(${i})">
-
-              Confirmar PIX
-
-            </button>
-
-            <button class="btn-liberar"
-              onclick="liberar(${i})">
-
-              Liberar
-
-            </button>
-
-          </div>
+          <button style="background:#c62828;color:white"
+            onclick="liberar(${i})">Liberar</button>
         `;
-
+      } else {
+        acao = "Aguardando PIX";
       }
-
     }
 
-    else{
+    else {
+      status = '<span class="tag azul">DISPONÍVEL</span>';
 
-      tag = '<span class="tag disponivel">DISPONÍVEL</span>';
-
-      conteudo = `
-        <div class="campo">
-
-          <input
-            id="comp${i}"
-            type="text"
-            placeholder="Digite seu nome"
-            autocomplete="name"
-            autocorrect="off"
-            autocapitalize="words"
-            enterkeyhint="done"
-          >
-
-          <button class="btn-reservar"
-            onclick="reservar(${i})">
-
-            Reservar
-
-          </button>
-
-        </div>
+      acao = `
+        <input id="comp${i}" placeholder="Seu nome">
+        <br><br>
+        <button style="background:#1565c0;color:white"
+          onclick="reservar(${i})">Reservar</button>
       `;
-
     }
 
-    card.innerHTML = `
-      <div class="topo">
-
-        <div class="nome">${item.nome}</div>
-
-        ${tag}
-
-      </div>
-
-      ${conteudo}
+    tr.innerHTML = `
+      <td>${item.nome}</td>
+      <td>${item.comprador || "-"}</td>
+      <td>${status}</td>
+      <td>${acao}</td>
     `;
 
-    div.appendChild(card);
-
+    tbody.appendChild(tr);
   });
 
   atualizarPainel();
 }
-async function reservar(i){
+async function reservar(i) {
 
-  if(lista[i].travado){
+  if (lista[i].travado) {
     alert("Este nome já foi reservado.");
     return;
   }
 
-  const input = document.getElementById(`comp${i}`);
-  const nome = input.value.trim();
+  const nome = document.getElementById(`comp${i}`).value.trim();
 
-  if(!nome){
-    input.focus();
+  if (!nome) {
+    alert("Digite seu nome.");
     return;
   }
-
-  // trava imediatamente para evitar duplo clique
-  input.disabled = true;
 
   lista[i].comprador = nome;
   lista[i].travado = true;
 
   await salvar(lista[i]);
-
-  // fecha o teclado APÓS salvar
-  input.blur();
-
   await carregar();
 }
-async function liberar(i){
 
-  if(!admin) return;
+async function liberar(i) {
 
-  if(lista[i].pago){
+  if (!admin) return;
+
+  if (lista[i].pago) {
     alert("Não é possível liberar um nome já pago.");
     return;
   }
 
-  if(!confirm("Liberar esta reserva?")) return;
+  if (!confirm("Liberar esta reserva?")) return;
 
   lista[i].comprador = "";
   lista[i].travado = false;
@@ -498,23 +263,22 @@ async function liberar(i){
   await carregar();
 }
 
-async function confirmarPago(i){
+async function confirmarPago(i) {
 
-  if(!admin) return;
+  if (!admin) return;
 
-  if(!confirm("Confirmar recebimento do PIX?")) return;
+  if (!confirm("Confirmar recebimento do PIX?")) return;
 
   lista[i].pago = true;
 
   await salvar(lista[i]);
   await carregar();
 }
-
-function loginAdmin(){
+function loginAdmin() {
 
   const s = prompt("Senha do administrador:");
 
-  if(s !== SENHA){
+  if (s !== SENHA) {
     alert("Senha incorreta.");
     return;
   }
@@ -527,7 +291,7 @@ function loginAdmin(){
   render();
 }
 
-function logoutAdmin(){
+function logoutAdmin() {
 
   admin = false;
 
@@ -537,9 +301,21 @@ function logoutAdmin(){
   render();
 }
 
-async function resetar(){
+function filtrar() {
 
-  if(!admin) return;
+  const texto = document.getElementById("pesquisa").value.toLowerCase();
+
+  document.querySelectorAll("tbody tr").forEach(tr => {
+
+    const nome = tr.children[0].innerText.toLowerCase();
+
+    tr.style.display = nome.includes(texto) ? "" : "none";
+  });
+}
+
+async function resetar() {
+
+  if (!admin) return;
 
   const ok = confirm(
     "ATENÇÃO!\\n\\n" +
@@ -548,9 +324,9 @@ async function resetar(){
     "Deseja continuar?"
   );
 
-  if(!ok) return;
+  if (!ok) return;
 
-  for(const item of lista){
+  for (const item of lista) {
 
     item.comprador = "";
     item.travado = false;
@@ -565,11 +341,9 @@ async function resetar(){
 }
 carregar();
 
-// Atualiza automaticamente a cada 1 segundos
 setInterval(carregar, 1000);
 
 </script>
 
-</div>
 </body>
 </html>
