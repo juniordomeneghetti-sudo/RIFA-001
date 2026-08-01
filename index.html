@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rifa Compartilhada</title>
+
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:#f2f2f2;
+  margin:0;
+  padding:15px;
+}
+h1{
+  text-align:center;
+  margin-bottom:5px;
+}
+.sub{
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  color:#0a7d2c;
+  margin-bottom:20px;
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:15px;
+}
+.card{
+  background:white;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 0 6px rgba(0,0,0,.15);
+}
+.card h3{
+  margin:0;
+  font-size:14px;
+}
+.card span{
+  font-size:28px;
+  font-weight:bold;
+}
+.botoes{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-bottom:15px;
+  flex-wrap:wrap;
+}
+button{
+  border:none;
+  border-radius:8px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px;
+}
+.admin{background:#222;color:white;}
+.sair{background:#666;color:white;}
+.reset{background:#c62828;color:white;}
+input{
+  width:100%;
+  padding:8px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  box-sizing:border-box;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+}
+th{
+  background:#222;
+  color:white;
+  padding:10px;
+}
+td{
+  padding:8px;
+  border:1px solid #ddd;
+  text-align:center;
+}
+.disponivel{background:white;}
+.reservado{background:#fff7d6;}
+.pago{background:#c8f7c5;}
+.tag{
+  font-weight:bold;
+}
+.verde{color:#0a7d2c;}
+.amarelo{color:#b8860b;}
+.azul{color:#1565c0;}
+@media(max-width:700px){
+  .cards{grid-template-columns:1fr;}
+  table{font-size:12px;}
+}
+</style>
+</head>
+
+<body>
+
+<h1>RIFA 001</h1>
+<div class="sub">Prêmio: KIT CHURRASCO + CERVEJA</div>
+<p> Valor da compra de um número é: $20,00</p>
+
+<div class="cards">
+  <div class="card"><h3>Disponíveis</h3><span id="disp">0</span></div>
+  <div class="card"><h3>Reservados</h3><span id="res">0</span></div>
+  <div class="card"><h3>Pagos</h3><span id="pag">0</span></div>
+</div>
+
+<!-- <input id="pesquisa" placeholder="Pesquisar nome..." onkeyup="filtrar()"> -->
+
+<div class="botoes">
+  <button class="admin" onclick="loginAdmin()">Login Admin</button>
+  <button class="sair" id="btnSair" style="display:none" onclick="logoutAdmin()">Sair</button>
+  <button class="reset" id="btnReset" style="display:none" onclick="resetar()">Reset Geral</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Comprador</th>
+      <th>Status</th>
+      <th>Ação</th>
+    </tr>
+  </thead>
+  <tbody id="tabela"></tbody>
+</table>
+
+<script>
+
+const API = "https://script.google.com/macros/s/AKfycbykN9PFwTbIMLR0U6tVH5OgQUMM72PNwK0ZdCzl4K15o8Qiubm08FYxZij_BLOUOW0C-w/exec";
+const SENHA = "Axé2026";
+
+let admin = false;
+let lista = [];
+async function carregar() {
+  const r = await fetch(API);
+  lista = await r.json();
+  render();
+}
+
+async function salvar(item) {
+  await fetch(API, {
+    method: "POST",
+    body: JSON.stringify(item)
+  });
+}
+
+function atualizarPainel() {
+  let d = 0, r = 0, p = 0;
+
+  lista.forEach(i => {
+    if (i.pago) p++;
+    else if (i.travado) r++;
+    else d++;
+  });
+
+  document.getElementById("disp").innerText = d;
+  document.getElementById("res").innerText = r;
+  document.getElementById("pag").innerText = p;
+}
+
+function render() {
+  const tbody = document.getElementById("tabela");
+  tbody.innerHTML = "";
+
+  lista.forEach((item, i) => {
+    const tr = document.createElement("tr");
+
+    if (item.pago) tr.className = "pago";
+    else if (item.travado) tr.className = "reservado";
+    else tr.className = "disponivel";
+
+    let status = "";
+    let acao = "";
+
+    if (item.pago) {
+      status = '<span class="tag verde">PAGO</span>';
+      acao = "Pago confirmado";
+    }
+
+    else if (item.travado) {
+      status = '<span class="tag amarelo">RESERVADO</span>';
+
+      if (admin) {
+        acao = `
+          <button style="background:#2e7d32;color:white"
+            onclick="confirmarPago(${i})">PIX</button>
+
+          <button style="background:#c62828;color:white"
+            onclick="liberar(${i})">Liberar</button>
+        `;
+      } else {
+        acao = "Aguardando PIX";
+      }
+    }
+
+    else {
+      status = '<span class="tag azul">DISPONÍVEL</span>';
+
+      acao = `
+        <input id="comp${i}" placeholder="Seu nome">
+        <br><br>
+        <button style="background:#1565c0;color:white"
+          onclick="reservar(${i})">Reservar</button>
+      `;
+    }
+
+    tr.innerHTML = `
+      <td>${item.nome}</td>
+      <td>${item.comprador || "-"}</td>
+      <td>${status}</td>
+      <td>${acao}</td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+
+  atualizarPainel();
+}
+async function reservar(i) {
+
+  if (lista[i].travado) {
+    alert("Este nome já foi reservado.");
+    return;
+  }
+
+  const nome = document.getElementById(`comp${i}`).value.trim();
+
+  if (!nome) {
+    alert("Digite seu nome.");
+    return;
+  }
+
+  lista[i].comprador = nome;
+  lista[i].travado = true;
+
+  await salvar(lista[i]);
+  await carregar();
+}
+
+async function liberar(i) {
+
+  if (!admin) return;
+
+  if (lista[i].pago) {
+    alert("Não é possível liberar um nome já pago.");
+    return;
+  }
+
+  if (!confirm("Liberar esta reserva?")) return;
+
+  lista[i].comprador = "";
+  lista[i].travado = false;
+
+  await salvar(lista[i]);
+  await carregar();
+}
+
+async function confirmarPago(i) {
+
+  if (!admin) return;
+
+  if (!confirm("Confirmar recebimento do PIX?")) return;
+
+  lista[i].pago = true;
+
+  await salvar(lista[i]);
+  await carregar();
+}
+function loginAdmin() {
+
+  const s = prompt("Senha do administrador:");
+
+  if (s !== SENHA) {
+    alert("Senha incorreta.");
+    return;
+  }
+
+  admin = true;
+
+  document.getElementById("btnSair").style.display = "inline-block";
+  document.getElementById("btnReset").style.display = "inline-block";
+
+  render();
+}
+
+function logoutAdmin() {
+
+  admin = false;
+
+  document.getElementById("btnSair").style.display = "none";
+  document.getElementById("btnReset").style.display = "none";
+
+  render();
+}
+
+function filtrar() {
+
+  const texto = document.getElementById("pesquisa").value.toLowerCase();
+
+  document.querySelectorAll("tbody tr").forEach(tr => {
+
+    const nome = tr.children[0].innerText.toLowerCase();
+
+    tr.style.display = nome.includes(texto) ? "" : "none";
+  });
+}
+
+async function resetar() {
+
+  if (!admin) return;
+
+  const ok = confirm(
+    "ATENÇÃO!\\n\\n" +
+    "Isso vai apagar TODOS os compradores, " +
+    "remover TODOS os pagamentos e liberar TODOS os nomes.\\n\\n" +
+    "Deseja continuar?"
+  );
+
+  if (!ok) return;
+
+  for (const item of lista) {
+
+    item.comprador = "";
+    item.travado = false;
+    item.pago = false;
+
+    await salvar(item);
+  }
+
+  await carregar();
+
+  alert("Rifa resetada com sucesso!");
+}
+carregar();
+
+setInterval(carregar, 5000);
+
+</script>
+
+</body>
+</html>
