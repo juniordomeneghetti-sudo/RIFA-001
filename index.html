@@ -2,33 +2,49 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rifa Compartilhada</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Rifa 001</title>
 
 <style>
+
+*{
+  box-sizing:border-box;
+}
+
 body{
   font-family:Arial,sans-serif;
   background:#f2f2f2;
   margin:0;
   padding:15px;
+  -webkit-text-size-adjust:100%;
 }
+
 h1{
   text-align:center;
   margin-bottom:5px;
 }
+
 .sub{
   text-align:center;
   font-size:20px;
   font-weight:bold;
   color:#0a7d2c;
-  margin-bottom:20px;
+  margin-bottom:10px;
 }
+
+.info{
+  text-align:center;
+  margin-bottom:20px;
+  font-weight:bold;
+}
+
 .cards{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
-  margin-bottom:15px;
+  margin-bottom:20px;
 }
+
 .card{
   background:white;
   padding:15px;
@@ -36,21 +52,25 @@ h1{
   text-align:center;
   box-shadow:0 0 6px rgba(0,0,0,.15);
 }
+
 .card h3{
   margin:0;
   font-size:14px;
 }
+
 .card span{
   font-size:28px;
   font-weight:bold;
 }
+
 .botoes{
   display:flex;
   gap:10px;
   justify-content:center;
-  margin-bottom:15px;
+  margin-bottom:20px;
   flex-wrap:wrap;
 }
+
 button{
   border:none;
   border-radius:8px;
@@ -58,16 +78,11 @@ button{
   cursor:pointer;
   font-size:14px;
 }
+
 .admin{background:#222;color:white;}
 .sair{background:#666;color:white;}
 .reset{background:#c62828;color:white;}
-input{
-  width:100%;
-  padding:8px;
-  border-radius:6px;
-  border:1px solid #ccc;
-  box-sizing:border-box;
-}
+
 table{
   width:100%;
   border-collapse:collapse;
@@ -75,53 +90,127 @@ table{
   border-radius:10px;
   overflow:hidden;
 }
+
 th{
   background:#222;
   color:white;
   padding:10px;
 }
+
 td{
   padding:8px;
   border:1px solid #ddd;
   text-align:center;
+  vertical-align:top;
 }
+
 .disponivel{background:white;}
 .reservado{background:#fff7d6;}
 .pago{background:#c8f7c5;}
+
 .tag{
   font-weight:bold;
 }
+
 .verde{color:#0a7d2c;}
 .amarelo{color:#b8860b;}
 .azul{color:#1565c0;}
-@media(max-width:700px){
-  .cards{grid-template-columns:1fr;}
-  table{font-size:12px;}
+
+.campo-reserva{
+  min-width:140px;
 }
+
+.campo-reserva input{
+  width:100%;
+  padding:10px;
+  font-size:16px;
+  border:1px solid #ccc;
+  border-radius:8px;
+}
+
+.campo-reserva button{
+  width:100%;
+  margin-top:8px;
+  background:#1565c0;
+  color:white;
+  font-size:15px;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+@media(max-width:700px){
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  table{
+    font-size:12px;
+  }
+
+  button{
+    font-size:13px;
+  }
+
+}
+
 </style>
 </head>
 
 <body>
-
 <h1>RIFA 001</h1>
-<div class="sub">Prêmio: KIT CHURRASCO + CERVEJA</div>
-<p> Valor da compra de um número é: $20,00</p>
 
-<div class="cards">
-  <div class="card"><h3>Disponíveis</h3><span id="disp">0</span></div>
-  <div class="card"><h3>Reservados</h3><span id="res">0</span></div>
-  <div class="card"><h3>Pagos</h3><span id="pag">0</span></div>
+<div class="sub">
+  Prêmio: KIT CHURRASCO + CERVEJA
 </div>
 
-<!-- <input id="pesquisa" placeholder="Pesquisar nome..." onkeyup="filtrar()"> -->
+<div class="info">
+  Valor do nome: R$ 20,00
+</div>
+
+<div class="cards">
+  <div class="card">
+    <h3>Disponíveis</h3>
+    <span id="disp">0</span>
+  </div>
+
+  <div class="card">
+    <h3>Reservados</h3>
+    <span id="res">0</span>
+  </div>
+
+  <div class="card">
+    <h3>Pagos</h3>
+    <span id="pag">0</span>
+  </div>
+</div>
 
 <div class="botoes">
-  <button class="admin" onclick="loginAdmin()">Login Admin</button>
-  <button class="sair" id="btnSair" style="display:none" onclick="logoutAdmin()">Sair</button>
-  <button class="reset" id="btnReset" style="display:none" onclick="resetar()">Reset Geral</button>
+  <button class="admin" onclick="loginAdmin()">
+    Login Admin
+  </button>
+
+  <button class="sair" id="btnSair"
+    style="display:none"
+    onclick="logoutAdmin()">
+
+    Sair
+
+  </button>
+
+  <button class="reset" id="btnReset"
+    style="display:none"
+    onclick="resetar()">
+
+    Reset Geral
+
+  </button>
 </div>
 
 <table>
+
   <thead>
     <tr>
       <th>Nome</th>
@@ -130,23 +219,30 @@ td{
       <th>Ação</th>
     </tr>
   </thead>
+
   <tbody id="tabela"></tbody>
+
 </table>
 
 <script>
 
-const API = "https://script.google.com/macros/s/AKfycbxul6neaXASt-kFCc4AcHpztykUVTvykoz7dvCOEirrD2YC4mp8qHllyEdl_PMLgU0C/exec";
+const API =
+"https://script.google.com/macros/s/AKfycbxul6neaXASt-kFCc4AcHpztykUVTvykoz7dvCOEirrD2YC4mp8qHllyEdl_PMLgU0C/exec";
+
 const SENHA = "Axé2026";
 
 let admin = false;
 let lista = [];
 async function carregar() {
+
   const r = await fetch(API);
   lista = await r.json();
+
   render();
 }
 
 async function salvar(item) {
+
   await fetch(API, {
     method: "POST",
     body: JSON.stringify(item)
@@ -154,12 +250,15 @@ async function salvar(item) {
 }
 
 function atualizarPainel() {
+
   let d = 0, r = 0, p = 0;
 
   lista.forEach(i => {
+
     if (i.pago) p++;
     else if (i.travado) r++;
     else d++;
+
   });
 
   document.getElementById("disp").innerText = d;
@@ -168,10 +267,13 @@ function atualizarPainel() {
 }
 
 function render() {
+
   const tbody = document.getElementById("tabela");
+
   tbody.innerHTML = "";
 
   lista.forEach((item, i) => {
+
     const tr = document.createElement("tr");
 
     if (item.pago) tr.className = "pago";
@@ -182,34 +284,64 @@ function render() {
     let acao = "";
 
     if (item.pago) {
+
       status = '<span class="tag verde">PAGO</span>';
       acao = "Pago confirmado";
+
     }
 
     else if (item.travado) {
+
       status = '<span class="tag amarelo">RESERVADO</span>';
 
       if (admin) {
+
         acao = `
           <button style="background:#2e7d32;color:white"
-            onclick="confirmarPago(${i})">PIX</button>
+            onclick="confirmarPago(${i})">
+
+            PIX
+
+          </button>
+
+          <br><br>
 
           <button style="background:#c62828;color:white"
-            onclick="liberar(${i})">Liberar</button>
+            onclick="liberar(${i})">
+
+            Liberar
+
+          </button>
         `;
+
       } else {
+
         acao = "Aguardando PIX";
+
       }
     }
 
     else {
+
       status = '<span class="tag azul">DISPONÍVEL</span>';
 
       acao = `
-        <input id="comp${i}" placeholder="Seu nome">
-        <br><br>
-        <button style="background:#1565c0;color:white"
-          onclick="reservar(${i})">Reservar</button>
+        <div class="campo-reserva">
+
+          <input
+            id="comp${i}"
+            type="text"
+            placeholder="Digite seu nome"
+            autocomplete="name"
+            enterkeyhint="done"
+            onfocus="ajustarTela(this)"
+          >
+
+          <button onclick="reservar(${i})">
+            Reservar
+          </button>
+
+        </div>
       `;
     }
 
@@ -221,20 +353,34 @@ function render() {
     `;
 
     tbody.appendChild(tr);
+
   });
 
   atualizarPainel();
 }
-async function reservar(i) {
+function ajustarTela(el){
 
-  if (lista[i].travado) {
+  setTimeout(() => {
+
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+  }, 300);
+}
+
+async function reservar(i){
+
+  if(lista[i].travado){
     alert("Este nome já foi reservado.");
     return;
   }
 
-  const nome = document.getElementById(`comp${i}`).value.trim();
+  const input = document.getElementById(`comp${i}`);
+  const nome = input.value.trim();
 
-  if (!nome) {
+  if(!nome){
     alert("Digite seu nome.");
     return;
   }
@@ -242,20 +388,22 @@ async function reservar(i) {
   lista[i].comprador = nome;
   lista[i].travado = true;
 
+  input.blur();
+
   await salvar(lista[i]);
   await carregar();
+
 }
+async function liberar(i){
 
-async function liberar(i) {
+  if(!admin) return;
 
-  if (!admin) return;
-
-  if (lista[i].pago) {
+  if(lista[i].pago){
     alert("Não é possível liberar um nome já pago.");
     return;
   }
 
-  if (!confirm("Liberar esta reserva?")) return;
+  if(!confirm("Liberar esta reserva?")) return;
 
   lista[i].comprador = "";
   lista[i].travado = false;
@@ -264,22 +412,23 @@ async function liberar(i) {
   await carregar();
 }
 
-async function confirmarPago(i) {
+async function confirmarPago(i){
 
-  if (!admin) return;
+  if(!admin) return;
 
-  if (!confirm("Confirmar recebimento do PIX?")) return;
+  if(!confirm("Confirmar recebimento do PIX?")) return;
 
   lista[i].pago = true;
 
   await salvar(lista[i]);
   await carregar();
 }
-function loginAdmin() {
+
+function loginAdmin(){
 
   const s = prompt("Senha do administrador:");
 
-  if (s !== SENHA) {
+  if(s !== SENHA){
     alert("Senha incorreta.");
     return;
   }
@@ -292,7 +441,7 @@ function loginAdmin() {
   render();
 }
 
-function logoutAdmin() {
+function logoutAdmin(){
 
   admin = false;
 
@@ -302,21 +451,9 @@ function logoutAdmin() {
   render();
 }
 
-function filtrar() {
+async function resetar(){
 
-  const texto = document.getElementById("pesquisa").value.toLowerCase();
-
-  document.querySelectorAll("tbody tr").forEach(tr => {
-
-    const nome = tr.children[0].innerText.toLowerCase();
-
-    tr.style.display = nome.includes(texto) ? "" : "none";
-  });
-}
-
-async function resetar() {
-
-  if (!admin) return;
+  if(!admin) return;
 
   const ok = confirm(
     "ATENÇÃO!\\n\\n" +
@@ -325,9 +462,9 @@ async function resetar() {
     "Deseja continuar?"
   );
 
-  if (!ok) return;
+  if(!ok) return;
 
-  for (const item of lista) {
+  for(const item of lista){
 
     item.comprador = "";
     item.travado = false;
@@ -342,7 +479,8 @@ async function resetar() {
 }
 carregar();
 
-setInterval(carregar, 5000);
+// Atualiza automaticamente a cada 2 segundos
+setInterval(carregar, 2000);
 
 </script>
 
