@@ -230,7 +230,7 @@ td {
     <thead>
       <tr>
         <th>Nome</th>
-        <th>Comprador</th>
+        <th>Comprador | Celular</th>
         <th>Status</th>
         <th>Ação</th>
       </tr>
@@ -312,7 +312,7 @@ function render() {
       status = '<span class="tag azul">DISPONÍVEL</span>';
 
       acao = `
-        <input id="comp${i}" placeholder="Seu nome">
+        <input id="comp${i}" placeholder="Seu nome | seu celular">
         <br><br>
         <button style="background:#1565c0;color:white"
           onclick="reservar(${i})">Reservar</button>
